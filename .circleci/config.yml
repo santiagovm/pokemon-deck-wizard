@@ -16,8 +16,9 @@ jobs:
       - persist_to_workspace:
           root: ~/working-directory
           paths:
-            - Dockerfile
+            - .k8s
             - build/libs
+            - Dockerfile
 
   create-docker-image:
     docker:
@@ -40,6 +41,8 @@ jobs:
       - image: cimg/base:2020.04
     working_directory: ~/working-directory
     steps:
+      - attach_workspace:
+          at: ~/working-directory
       - run:
           name: install envsubst
           command: |
