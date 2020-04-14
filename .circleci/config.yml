@@ -1,6 +1,5 @@
 version: 2.1
 jobs:
-
   build:
     docker:
       - image: circleci/openjdk:11-jdk
@@ -22,16 +21,13 @@ jobs:
             - server/build/libs
 
   create-docker-image:
-    name: create docker image
     docker:
       - image: cimg/base:2020.04
     working_directory: ~/working-directory
     steps:
       - attach_workspace:
           at: ~/working-directory
-
       - setup_remote_docker
-      -
       - run:
           name: build and push docker image
           command: |
@@ -50,7 +46,6 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install gettext
-
       - run:
           name: prepare k8s template
           command: |
@@ -59,7 +54,6 @@ jobs:
               do
               envsubst < $f > ".k8s/.generated/$(basename $f)"
             done
-
       - run:
           name: setup kubectl
           command: |
@@ -67,7 +61,6 @@ jobs:
             kubectl config set-credentials k8s-user --token=${K8S_ACCESS_TOKEN}
             kubectl config set-context ci-context --cluster=ci-cluster --namespace=ci-namespace --user=k8s-user
             kubectl config use-context ci-context
-
       - run:
           name: deploy to k8s ci namespace
           command: |
