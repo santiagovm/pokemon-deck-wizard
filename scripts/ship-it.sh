@@ -20,7 +20,7 @@ function check_scripts() {
 }
 
 function build_project() {
-  ./gradlew clean build
+  ./gradlew
 }
 
 function purge_local_database() {
