@@ -10,15 +10,14 @@ jobs:
       TERM: dumb
     steps:
       - checkout
-
       - run:
           name: build spring app
           command: ./gradlew
-
       - persist_to_workspace:
           root: ~/working-directory
           paths:
-            - server/build/libs
+            - Dockerfile
+            - build/libs
 
   create-docker-image:
     docker:
