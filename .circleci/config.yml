@@ -1,0 +1,41 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:11-jdk
+    working_directory: ~/working-directory
+    environment:
+      # customize the jvm maximum heap limit
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+    steps:
+      - checkout
+      - run:
+          name: build spring app
+          command: ./gradlew
+
+      - run:
+          name: install docker client
+          command: apk add docker-cli
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      - run:
+          name: build and push docker image
+          command: |
+            TAG=0.1.$CIRCLE_BUILD_NUM
+            docker build --tag=$DOCKER_ACCOUNT/pokemon-deck-wizard:$TAG .
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push $DOCKER_ACCOUNT/pokemon-deck-wizard:$TAG
+
+workflows:
+  version: 2
+  "test, build, and deploy":
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+          context: build-context
