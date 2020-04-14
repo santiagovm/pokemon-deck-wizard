@@ -14,10 +14,6 @@ jobs:
           name: build spring app
           command: ./gradlew
 
-      - run:
-          name: install docker client
-          command: sudo apt-get install docker-cli
-
       - setup_remote_docker
 
       - run:
