@@ -9,3 +9,7 @@ class PokemonDeckWizardApplication
 fun main(args: Array<String>) {
 	runApplication<PokemonDeckWizardApplication>(*args)
 }
+
+// todo: replace dockerfile with a buildpack
+// todo: image version matching app version
+// todo: image version is hardcoded at 0.1.${build-num}

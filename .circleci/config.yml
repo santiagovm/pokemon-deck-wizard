@@ -10,6 +10,7 @@ jobs:
       TERM: dumb
     steps:
       - checkout
+
       - run:
           name: build spring app
           command: ./gradlew
@@ -23,6 +24,29 @@ jobs:
             docker build --tag=$DOCKER_ACCOUNT/pokemon-deck-wizard:$TAG .
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
             docker push $DOCKER_ACCOUNT/pokemon-deck-wizard:$TAG
+
+      - run:
+          name: prepare k8s template
+          command: |
+            rm -rf .k8s/.generated && mkdir -p .k8s/.generated
+            for f in .k8s/templates/ci.yml
+              do
+              envsubst < $f > ".k8s/.generated/$(basename $f)"
+            done
+
+      - run:
+          name: setup kubectl
+          command: |
+            kubectl config set-cluster ci-cluster --server=${K8S_CLUSTER_SERVER} --insecure-skip-tls-verify
+            kubectl config set-credentials k8s-user --token=${K8S_ACCESS_TOKEN}
+            kubectl config set-context ci-context --cluster=ci-cluster --namespace=ci-namespace --user=k8s-user
+            kubectl config use-context ci-context
+
+      - run:
+          name: deploy to k8s ci namespace
+          command: |
+            kubectl apply -f .k8s/.generated/ --validate=true
+            kubectl get pods
 
 workflows:
   version: 2

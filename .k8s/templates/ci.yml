@@ -1,0 +1,39 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: app-ci-deployment
+  labels:
+    app: app-ci
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-ci
+  template:
+    metadata:
+      labels:
+        app: app-ci
+    spec:
+      containers:
+        - name: app-ci
+          image: ${DOCKER_ACCOUNT}/pokemon-deck-wizard:0.1.$CIRCLE_BUILD_NUM
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: app-config
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: app-ci-service
+spec:
+  type : LoadBalancer
+  selector:
+    app: app-ci
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
