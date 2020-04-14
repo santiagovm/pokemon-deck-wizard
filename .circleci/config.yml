@@ -26,6 +26,12 @@ jobs:
             docker push $DOCKER_ACCOUNT/pokemon-deck-wizard:$TAG
 
       - run:
+          name: install envsubst
+          command: |
+            sudo apt-get update
+            sudo apt-get install gettext
+
+      - run:
           name: prepare k8s template
           command: |
             rm -rf .k8s/.generated && mkdir -p .k8s/.generated
