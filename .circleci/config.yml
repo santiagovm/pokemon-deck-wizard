@@ -38,4 +38,3 @@ workflows:
             branches:
               only:
                 - master
-          context: build-context
