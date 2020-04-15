@@ -37,7 +37,6 @@ function fail_for_unstaged_files() {
 
     if [ "$trimmed_unstaged_files_count" != "0" ]; then
         local -r unstaged_files=$(git status --porcelain)
-        local -r RED_COLOR_CODE='\033[0;31m'
         echo -e "${RED_COLOR_CODE}\\nERROR!\\nUnstaged and/or uncommitted files found! 😱\\nPlease clean these up and try again:\\n${unstaged_files}"
         return 1
     fi

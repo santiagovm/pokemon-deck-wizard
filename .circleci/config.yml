@@ -60,22 +60,20 @@ jobs:
           name: prepare k8s template
           command: |
             rm -rf .k8s/.generated && mkdir -p .k8s/.generated
-            for f in .k8s/manifest-templates/ci.yml
-              do
-              envsubst < $f > ".k8s/.generated/$(basename $f)"
-            done
+            manifest=.k8s/manifest-templates/ci.yml
+            envsubst < $manifest > ".k8s/.generated/$(basename $manifest)"
       - run:
           name: setup kubectl
           command: |
-            kubectl config set-cluster ci-cluster --server=${K8S_CLUSTER_SERVER} --insecure-skip-tls-verify
+            kubectl config set-cluster k8s-cluster --server=${K8S_CLUSTER_SERVER} --insecure-skip-tls-verify
             kubectl config set-credentials k8s-user --token=${K8S_ACCESS_TOKEN}
-            kubectl config set-context ci-context --cluster=ci-cluster --namespace=ci-namespace --user=k8s-user
-            kubectl config use-context ci-context
+            kubectl config set-context k8s-context --cluster=k8s-cluster --user=k8s-user
+            kubectl config use-context k8s-context
       - run:
           name: deploy to k8s ci namespace
           command: |
             kubectl apply -f .k8s/.generated/ --validate=true
-            kubectl get pods
+            kubectl get pods --namespace pdw-ci-namespace
 
 workflows:
   version: 2
