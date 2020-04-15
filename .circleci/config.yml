@@ -32,10 +32,15 @@ jobs:
       - run:
           name: build and push docker image
           command: |
-            TAG=0.1.$CIRCLE_BUILD_NUM
-            docker build --tag=$DOCKER_ACCOUNT/pokemon-deck-wizard:$TAG .
+            IMAGE_TAG=$DOCKER_ACCOUNT/pokemon-deck-wizard:0.1.$CIRCLE_BUILD_NUM
+            docker build --tag=$IMAGE_TAG .
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-            docker push $DOCKER_ACCOUNT/pokemon-deck-wizard:$TAG
+            docker push $IMAGE_TAG
+            eval "echo $IMAGE_TAG" > "image-tag.txt"
+      - persist_to_workspace:
+          root: ~/working-directory
+          paths:
+            - image-tag.txt
 
   deploy:
     docker:
@@ -61,6 +66,7 @@ jobs:
           command: |
             rm -rf .k8s/.generated && mkdir -p .k8s/.generated
             manifest=.k8s/manifest-templates/ci.yml
+            export IMAGE_TAG=$(eval cat image-tag.txt)
             envsubst < $manifest > ".k8s/.generated/$(basename $manifest)"
       - run:
           name: setup kubectl

@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
         - name: pdw-container
-          image: $DOCKER_ACCOUNT/pokemon-deck-wizard:0.1.$CIRCLE_BUILD_NUM
+          image: $IMAGE_TAG
           ports:
             - containerPort: 8080
               name: cont-http-port
