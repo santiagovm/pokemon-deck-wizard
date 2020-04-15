@@ -1,5 +1,6 @@
 version: 2.1
 jobs:
+
   build:
     docker:
       - image: circleci/openjdk:11-jdk
@@ -59,7 +60,7 @@ jobs:
           name: prepare k8s template
           command: |
             rm -rf .k8s/.generated && mkdir -p .k8s/.generated
-            for f in .k8s/templates/ci.yml
+            for f in .k8s/manifest-templates/ci.yml
               do
               envsubst < $f > ".k8s/.generated/$(basename $f)"
             done
