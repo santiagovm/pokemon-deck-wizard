@@ -15,7 +15,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: cont-http-port
+      targetPort: 8080
       name: lb-http-port
 
 ---

@@ -16,6 +16,15 @@
 - run k8s manifest against local k8s cluster to find basic problems, it takes a long time to find 
 small problems one at a time going throug the CI/CD pipeline
 
+- to get kubectl autocompletion
+
+    upgrade bash in macos
+        https://itnext.io/upgrading-bash-on-macos-7138bd1066ba
+        
+    setup autocompletion
+    
+        https://learnk8s.io/blog/kubectl-productivity#bash-on-macos
+
 ## circle ci env variables
 
 ### Docker Hub Registry
