@@ -17,6 +17,8 @@ spec:
       port: 80
       targetPort: 8080
       name: lb-http-port
+  selector:
+    app: pdw-app
 
 ---
 
@@ -29,11 +31,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: pdw-deployment-label
+      app: pdw-app
   template:
     metadata:
       labels:
-        app: pdw-deployment-label
+        app: pdw-app
     spec:
       containers:
         - name: pdw-container
