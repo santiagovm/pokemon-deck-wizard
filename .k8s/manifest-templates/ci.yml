@@ -8,7 +8,7 @@ metadata:
 apiVersion: v1
 kind: Service
 metadata:
-  name: pdw-service
+  name: pdw-load-balancer
   namespace: pdw-ci-namespace
 spec:
   type : LoadBalancer
@@ -16,7 +16,7 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: cont-http-port
-      name: svc-http-port
+      name: lb-http-port
 
 ---
 
