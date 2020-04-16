@@ -16,7 +16,6 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8080
-      name: lb-http-port
   selector:
     app: pdw-app
 
@@ -42,4 +41,3 @@ spec:
           image: $IMAGE_TAG
           ports:
             - containerPort: 8080
-              name: cont-http-port
