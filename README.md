@@ -8,8 +8,6 @@
 ## local k8s deployment dependencies
 
 - local k8s cluster
-- export DOCKER_ACCOUNT=local
-- export CIRCLE_BUILD_NUM=0
 
 ## lessons learned
 

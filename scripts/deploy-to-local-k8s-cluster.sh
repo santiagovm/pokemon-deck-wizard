@@ -30,7 +30,8 @@ function build_project() {
 
 function create_docker_image() {
   show_section_title "creating docker image"
-  docker build --tag="$DOCKER_ACCOUNT/pokemon-deck-wizard:0.1.$CIRCLE_BUILD_NUM" .
+  export IMAGE_TAG="local/pokemon-deck-wizard:0.1.0"
+  docker build --tag="$IMAGE_TAG" .
 }
 
 function prepare_k8s_manifest_template() {
